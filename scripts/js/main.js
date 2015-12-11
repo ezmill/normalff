@@ -20,7 +20,7 @@ function init(){
 
     camera = new THREE.OrthographicCamera( renderSize.x / - 2, renderSize.x / 2, renderSize.y / 2, renderSize.y / - 2, -10000, 10000 );
     // camera = new THREE.PerspectiveCamera(45, renderSize.x/renderSize.y, 0.1,10000);
-    camera.position.z = 1;
+    camera.position.z = -1000;
     renderer = new THREE.WebGLRenderer({preserveDrawingBuffer:true});
     renderer.setSize( renderSize.x, renderSize.y );
     renderer.setClearColor(0xffffff,1.0);
@@ -100,15 +100,16 @@ function init(){
         customShaders.diffShader, 
         customShaders2.reposShader,
         customShaders.blurShader,
-        // customShaders.passShader 
-        customShaders.embossShader
+        // customShaders.passShader
+        new NormalShader()
+        // customShaders.embossShader
     ];
     fbMaterial = new FeedbackMaterial(renderer, scene, camera, texture, shaders);  
     fbMaterial.init();
 
-    fbTex = new THREE.Texture(renderer.domElement);
-    fbTex.needsUpdate = true;
-    fbTex.minFilter = fbTex.magFilter = THREE.NearestFilter;
+    // fbTex = new THREE.Texture(renderer.domElement);
+    // fbTex.needsUpdate = true;
+    // fbTex.minFilter = fbTex.magFilter = THREE.NearestFilter;
 
 
     // normalScene = new THREE.Scene();
@@ -174,14 +175,15 @@ function init(){
 
     // normalGeometry = new THREE.PlaneGeometry(renderSize.x, renderSize.y);
 // 
-    // normalGeometry.verticesNeedUpdate = true;
-    // normalGeometry.normalsNeedUpdate = true;
-    // normalGeometry.uvsNeedUpdate = true;
-    // normalGeometry.computeCentroids();
-    // normalGeometry.computeFaceNormals();
-    // normalGeometry.computeVertexNormals();
-    // normalGeometry.computeMorphNormals();
-    // normalGeometry.computeTangents();
+    fbMaterial.material.uniforms["tMatCap"].value = THREE.ImageUtils.loadTexture( 'assets/textures/gold1.jpg' ) 
+    fbMaterial.geometry.verticesNeedUpdate = true;
+    fbMaterial.geometry.normalsNeedUpdate = true;
+    fbMaterial.geometry.uvsNeedUpdate = true;
+    fbMaterial.geometry.computeCentroids();
+    fbMaterial.geometry.computeFaceNormals();
+    fbMaterial.geometry.computeVertexNormals();
+    fbMaterial.geometry.computeMorphNormals();
+    fbMaterial.geometry.computeTangents();
 // 
     // normalMesh = new THREE.Mesh(normalGeometry, normalMaterial);
     // normalMesh.position.set(0,0,0);
@@ -279,7 +281,7 @@ function draw(){
     // _renderer.render(_scene, _camera);
     // _texture.needsUpdate = true;
     // texture.needsUpdate = true;
-    fbTex.needsUpdate = true;
+    // fbTex.needsUpdate = true;
 
     fbMaterial.update();
     renderer.render(scene, camera);
