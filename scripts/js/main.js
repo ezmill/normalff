@@ -245,9 +245,9 @@ function onMouseDown(){
     mouseDown = true;
     // r2 = 1.0;
     if(counter%2 == 0){
-        fbMaterial.inputFbo.materialuniforms.grid.value = 0.0;
+        fbMaterial.inputFbo.material.uniforms.grid.value = 0.0;
     } else {
-        fbMaterial.inputFbo.materialuniforms.grid.value = 1.0;
+        fbMaterial.inputFbo.material.uniforms.grid.value = 1.0;
     }
     counter++;
 

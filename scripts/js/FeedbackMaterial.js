@@ -20,6 +20,7 @@ function FeedbackMaterial(RENDERER, SCENE, CAMERA, TEXTURE, SHADERS){
     
     
     this.fbos = [];
+    this.inputFbo;
     this.init = function(){
 
         this.inputFbo = new FeedbackObject(this.inputShader);
