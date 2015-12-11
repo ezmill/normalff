@@ -42,35 +42,36 @@ function init(){
         // console.log(err);
     // });
     // _texture = new THREE.Texture( video );
-// _texture = null;
+    _texture = null;
     // _texture.needsUpdate = true;
     // _texture = THREE.ImageUtils.loadTexture("assets/textures/IMG_2584.jpg");
     // _texture = new THREE.Texture(gradient.canvas);
     // texture = THREE.ImageUtils.loadTexture("assets/textures/IMG_4215.JPG");
     // _texture.minFilter = _texture.magFilter = THREE.NearestFilter;
-// _scene = new THREE.Scene();
-// _camera = new THREE.OrthographicCamera( renderSize.x / - 2, renderSize.x / 2, renderSize.y / 2, renderSize.y / - 2, -10000, 10000 );
-// _camera.position.z = 1;
-// _renderer = new THREE.WebGLRenderer({preserveDrawingBuffer:true});
-// _renderer.setSize( renderSize.x*0.5, renderSize.y*0.5 );
-// _renderer.setClearColor(0xffffff,1.0);
-// _customShaders = new CustomShaders();
-// _geo = new THREE.PlaneGeometry(renderSize.x, renderSize.y);
+    // _scene = new THREE.Scene();
+    // _camera = new THREE.OrthographicCamera( renderSize.x / - 2, renderSize.x / 2, renderSize.y / 2, renderSize.y / - 2, -10000, 10000 );
+    // _camera.position.z = 1;
+    // _renderer = new THREE.WebGLRenderer({preserveDrawingBuffer:true});
+    // _renderer.setSize( renderSize.x, renderSize.y );
+    // _renderer.setClearColor(0xffffff,1.0);
+    // _customShaders = new CustomShaders();
+    // _geo = new THREE.PlaneGeometry(renderSize.x, renderSize.y);
     // _geo = new THREE.SphereGeometry(500,250,250);
-// _mat = new THREE.ShaderMaterial({
+    // _mat = new THREE.ShaderMaterial({
         // uniforms: _customShaders.gridShader.uniforms,
         // fragmentShader: _customShaders.gridShader.fragmentShader,
         // vertexShader: _customShaders.gridShader.vertexShader
     // });
     // _mat.uniforms.texture.value = null;
-// _mat.uniforms.grid.value = 1.0;
-// _mesh = new THREE.Mesh(_geo , _mat);
-// _scene.add(_mesh);
+    // _mat.uniforms.grid.value = 1.0;
+    // _mesh = new THREE.Mesh(_geo , _mat);
+    // scene.add(_mesh);
     // container.appendChild(_renderer.domElement);
 
+    texture = null;
     // texture = new THREE.Texture(_renderer.domElement);
-    texture = THREE.ImageUtils.loadTexture("assets/textures/input.png");
-    texture.minFilter = texture.magFilter = THREE.LinearFilter;
+    // texture = THREE.ImageUtils.loadTexture("assets/textures/input.png");
+    // texture.minFilter = texture.magFilter = THREE.LinearFilter;
     // texture.needsUpdate = true;
 
     // shader = new MeshShader();
@@ -101,7 +102,8 @@ function init(){
         customShaders2.reposShader,
         customShaders.blurShader,
         // customShaders.passShader
-        new NormalShader()
+        new NormalShader(),
+        customShaders.gridShader
         // customShaders.embossShader
     ];
     fbMaterial = new FeedbackMaterial(renderer, scene, camera, texture, shaders);  
@@ -291,7 +293,7 @@ function draw(){
 
     // normalRenderer.render(normalScene, normalCamera);
 
-    // capturer.capture( normalRenderer.domElement );
+    capturer.capture( renderer.domElement );
 
 }
 function screenshot(renderer) {

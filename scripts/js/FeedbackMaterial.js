@@ -4,14 +4,15 @@ function FeedbackMaterial(RENDERER, SCENE, CAMERA, TEXTURE, SHADERS){
     this.scene = SCENE;
     this.camera = CAMERA;
     this.texture = TEXTURE;
-    this.texture.minFilter = THREE.LinearFilter;
-    this.texture.magFilter = THREE.LinearFilter;
+    // this.texture.minFilter = THREE.LinearFilter;
+    // this.texture.magFilter = THREE.LinearFilter;
     this.shader1 = SHADERS[0];
     this.shader2 = SHADERS[1];
     this.shader3 = SHADERS[2];
     this.shader4 = SHADERS[3];
     this.shader5 = SHADERS[4];
     this.outputShader = SHADERS[5]
+    this.inputShader = SHADERS[6];
 
     this.mesh;
     
@@ -21,8 +22,11 @@ function FeedbackMaterial(RENDERER, SCENE, CAMERA, TEXTURE, SHADERS){
     this.fbos = [];
     this.init = function(){
 
+        this.inputFbo = new FeedbackObject(this.inputShader);
+        this.inputFbo.material.uniforms.grid.value = 1.0;
+
         this.fbo1 = new FeedbackObject(this.shader1);
-        this.fbo1.material.uniforms.texture.value = this.texture;
+        this.fbo1.material.uniforms.texture.value = this.inputFbo.renderTarget;
 
         this.fbo2 = new FeedbackObject(this.shader2); 
         this.fbo2.material.uniforms.texture.value = this.fbo1.renderTarget;
@@ -30,7 +34,7 @@ function FeedbackMaterial(RENDERER, SCENE, CAMERA, TEXTURE, SHADERS){
         this.frameDiff = new FeedbackObject(this.shader3); 
         this.frameDiff.material.uniforms.texture.value = this.fbo1.renderTarget;
         this.frameDiff.material.uniforms.texture2.value = this.fbo2.renderTarget;
-        this.frameDiff.material.uniforms.texture3.value = this.texture;
+        this.frameDiff.material.uniforms.texture3.value = this.inputFbo.renderTarget;
 
         this.fbo3 = new FeedbackObject(this.shader4); 
         this.fbo3.material.uniforms.texture.value = this.frameDiff.renderTarget;
@@ -78,6 +82,7 @@ function FeedbackMaterial(RENDERER, SCENE, CAMERA, TEXTURE, SHADERS){
     }
 
     this.update = function(){
+        this.inputFbo.render(this.renderer, this.camera);
         this.fbo2.render(this.renderer, this.camera);
         this.frameDiff.render(this.renderer, this.camera);
         this.fbo3.render(this.renderer, this.camera);
@@ -88,6 +93,8 @@ function FeedbackMaterial(RENDERER, SCENE, CAMERA, TEXTURE, SHADERS){
     }
     this.getNewFrame = function(){
         this.fbo1.render(this.renderer, this.camera);
+        // this.fbo1.material.uniforms.texture.value = this.inputFbo.renderTarget;
+
     }
     this.swapBuffers = function(){
         var a = this.fbo3.renderTarget;
